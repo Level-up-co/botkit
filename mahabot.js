@@ -1,8 +1,6 @@
 var env = require('node-env-file');
 env(__dirname + '/.env');
-var controller = Botkit.slackbot({
-    json_file_store: './db_slackbutton_bot/'
- });
+
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
     usage_tip();
@@ -11,6 +9,9 @@ if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
   
   var Botkit = require('botkit');
   var debug = require('debug')('botkit:main');
+  var controller = Botkit.slackbot({
+    json_file_store: './db_slackbutton_bot/'
+    });
   
   var bot_options = {
       clientId: process.env.clientId,
