@@ -1,5 +1,9 @@
 var env = require('node-env-file');
 env(__dirname + '/.env');
+var controller = Botkit.slackbot({
+    json_file_store: './db_slackbutton_bot/'
+ });
+
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
     usage_tip();
     // process.exit(1);
@@ -85,6 +89,9 @@ if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
     // If a trigger is matched, the conversation will automatically fire!
     // You can tie into the execution of the script using the functions
     // controller.studio.before, controller.studio.after and controller.studio.validate
+    controller.hears('hear_message', 'direct_message,direct_mention,mention', function(bot, message) {
+        controller.storage.teams.save({id: message.team, foo:'bar'}, function(err) { console.log(err) });
+    });
     if (process.env.studio_token) {
         controller.on('direct_message,direct_mention,mention', function(bot, message) {
             controller.studio.runTrigger(bot, message.text, message.user, message.channel, message).then(function(convo) {
